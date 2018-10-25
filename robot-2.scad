@@ -86,6 +86,8 @@ module dizuo_y1(){
 }
 
 //底座
+
+
 module dizuo(){
     translate([0,0,88]){
         difference() {
@@ -127,10 +129,8 @@ module zc_huatao12(){
 
 //密封过渡轴
 module roller_l12(){
-    translate([0,0,0])rotate([180,0,0]){
-        color("Gray") rotate([0,0,0])translate([0,0,0])
-        cylinder(200,6 ,6, center=true);
-    }
+    color("Gray") translate([0,0,0])rotate([180,0,0])
+    cylinder(180,6 ,6, center=true);
 }
 //卧式光杠固定座        
 module gdz_os12(){
@@ -168,10 +168,10 @@ module lzq_12(){
     }
 }
 
-//方管4060
-module fangguan4060(){
+//铝型材30303
+module lxc3030(){
     color("blue") translate([0,0,0])rotate([0,0,0])
-    cube([400,60,40],true);
+    cube([500,30,30],true);
 }
 //12光杠
 module guanggang_12(){
@@ -219,13 +219,21 @@ module sg(){
 }
 //连接板
 module ljb(){
-    translate([90,0,0]){
-        color("yellow") translate([0,-62.5,-60])
-        cube([80,100,5],true);
-        color("yellow") translate([0,-40,20]) 
-        cube([80,5,165],true);
+    translate([50,0,-30]){
+        intersection(){    
+            color("yellow") translate([0,0,0])
+            cube([5,80,80],true);
+        }
+        union(){
+            color("yellow") 
+            translate([40,0,-40]) cube([80,60,5],true);
+            translate([-25,0,-5]) cube([50,40,5],true);
+            translate([-25,0,-40]) cube([50,40,5],true);            
+            
+        }
     }  
 }
+
 
 //垂直部分
 
@@ -254,7 +262,7 @@ module djz(){
 //齿轮
 module cl_60(){
     color("steelblue") rotate([0,0,0])translate([0,0,0])
-    cylinder(15,30,30, center=true);
+    cylinder(15,40,40, center=true);
 }
 //小齿轮
 module cl_16(){
@@ -276,130 +284,133 @@ module ls(){
     translate([0,0,20])  
     cube([14,14,8],true);
 }
-//升降连接板
+//升降电机连接板
 module sjljb(){
-    color("steelBlue") translate([0,0,0])
-    rotate([0,0,0])
-    cube([40,80,6],true);
-}
-
-//部件
-module mfzc(){
-//  dieffein
-    dizuo();  //支座
-    motor_s57() ;   //57减速电机
-    translate([0,0,100]) motor_zhijia57();   //减速电机支架        
-    translate([0,0,100]) lzq_12();   //联轴器12
-    translate([0,0,155])rotate([0,180,0]) zc_huatao12();  //轴承12    
-    translate([0,0,165]) fl_12();      //防水法兰
-    translate([0,0,150]) roller_l12();  //转轴
-    translate([0,0,110]) gdz_os12();   //光轴固定座1
-    translate([0,0,160]) gdz_os12();    //光轴固定座12  
-}
-
-//main:
- translate([0,0,45]){
-    translate([0,0,65])dizuo_y();  //支座
-    motor_s57() ;   //57减速电机
-    translate([0,0,100]) motor_zhijia57();   //减速电机支架        
-    translate([0,0,100]) lzq_12();   //联轴器12
-    translate([0,0,155])rotate([0,180,0]) zc_huatao12();  //轴承12    
-    translate([0,0,165]) fl_12();      //防水法兰
-    translate([0,0,150]) roller_l12();  //转轴
-    translate([0,0,110]) gdz_os12();   //光轴固定座1
-    translate([0,0,160]) gdz_os12();    //光轴固定座12  
-    // 摆臂
-    rotate([0,0,0]){
-        translate([180,0,0]) {  
-            translate([0,0,210])fangguan4060();   //方管4060摆臂    
-               // 中间转动驱动
-                translate([170,0,20]){
-                    translate([0,0,60])dizuo_y();  //支座
-                    motor_s57() ;   //57减速电机
-                    translate([0,0,100]) motor_zhijia57();   //减速电机支架        
-                    translate([0,0,100]) lzq_12();   //联轴器12
-                    translate([0,0,155])rotate([0,180,0]) zc_huatao12();  //轴承12    
-                    translate([0,0,165]) fl_12();      //防水法兰
-                    translate([0,0,150]) scale([1,1,1.4,])roller_l12();  //转轴
-                    translate([0,0,145]) gdz_os12();   //光轴固定座1
-                    translate([0,0,195]) gdz_os12();    //光轴固定座12          
-                }
-            }
-        //外摆臂
-        rotate([0,0,0]){
-            translate([480,0,265]){  
-                scale([0.8,1,1])translate([10,0,0])fangguan4060();   //方管4060摆臂            
-                //升降、抓取
-                translate([0,0,37]){
-                    translate([20,9,0])rotate([0,0,0])ljb();   // 连接板
-                    translate([0,0,-120])scale([1,1,1]){
-                        scale([1.2,1.2,1.2])translate([100,-60,55])rotate([0,0,0])zc_huatao12();   //   花套轴承12（上）       
-                        scale([1.2,1.2,1.2])translate([100,-60,48])rotate([0,180,50])zc_huatao12();   //   花套轴承12（下） 
-                        scale([1.2,1.2,0.85])translate([100,-60,70])rotate([0,180,50])roller_l12();   //   带键轴   
-                    }
-                    translate([120,-72.5,-40])rotate([0,0,0])cl_60();  //齿轮
-                    {
-                    translate([85,-60,5])rotate([0,180,0])motor_s42();   //42旋转电机
-                    translate([85,-60,-40])rotate([0,0,0])cl_16();    //小齿轮
-                    }
-                    //升降机
-                    translate([275,-10,80])rotate([0,180,0]){
-                    translate([155,-60,-10])rotate([0,0,0])motor_42();   //42提升电机
-                    translate([155,-60,30])rotate([0,0,0])sg();   //丝杠
-                    translate([155,-50,25])rotate([0,90,-90]) scale([0.6,0.6,0.6])gdz_ls12();   //固定轴承座
-          //          translate([155,-50,105])rotate([0,90,-90]) scale([0.6,0.6,0.6])gdz_ls12();   //固定轴承座
-                    translate([155,-61,50])rotate([0,0,0]) lm();  // 螺母
-                    translate([155,-60,20])rotate([0,0,0]) scale([0.5,0.5,0.5])lzq_12();  // 联轴器
-                //    translate([200,0,60])scale([0.5,0.5,0.5])dizuo_y();  //支座
-                 //   translate([140,-65,85])rotate([0,0,-72]) sjljb();  // 升降连接板
-                  //  translate([120,-70,75])rotate([0,0,0]) ls();  // 螺丝
-                        
-                    }
-                    translate([0,0,0])rotate([0,0,0]){
-                        translate([120,-75,-175])rotate([0,0,0])dj();   //舵机
-                        translate([120,-75,-170])rotate([0,0,0])djz();   //舵机爪(左)        
-                        translate([120,-75,-170])rotate([0,-90,0])djz();   //舵机爪（右）  
-                  //      translate([120,-75,-170])rotate([0,-45,0])djz();   //舵机爪（min)         
-    
-                        
-                        translate([120,-100,-350])rotate([0,0,0])gj_max();   //工件   
-                        translate([120,-100,-350])rotate([0,0,0])gj_min();   //工件     
-                    }                
-                }
-            }
-        }        
+    union() {
+        color("steelBlue") 
+        translate([0,0,75])cube([3,42,45],true);
+        translate([0,0,30])cube([3,15,50],true);
+        translate([-5,0,5])cube([12,15,3],true);
+        translate([-10,0,-20])cube([3,15,50],true);
     }
+}
+
+//translate([-150,0,0])sjljb();
+// 量取尺寸线
+module ccx(){
+    color("red") translate([0,0,0])   
+    rotate([0,0,0])   
+    cylinder(500,2,2, center=true);
+}
+
+//推力轴承12mm
+module tlzc12(){
+    difference(){  
+        color("cyan") translate([0,0,0])rotate([0,0,0]) 
+        cylinder(8,12,12, center=true);
+        cylinder(8,6,6, center=true);
+    }
+}   
+//translate([-200,0,0])tlzc8();
+
+//转动部件
+
+module zdbj(){
+    union(){
+        translate([0,0,150])ccx();  //尺寸线
+        translate([0,0,65])dizuo_y();  //支座
+        motor_s57() ;   //57减速电机
+        translate([0,0,100]) motor_zhijia57();   //减速电机支架        
+        translate([0,0,100]) lzq_12();   //联轴器12
+        translate([0,0,155])rotate([0,180,0]) zc_huatao12();  //轴承12    
+        translate([0,0,165]) fl_12();      //防水法兰
+        translate([0,0,150]) roller_l12();  //转轴
+        translate([0,0,105]) gdz_os12();   //光轴固定座1
+        translate([0,0,145]) gdz_os12();    //光轴固定座12  
+        translate([0,0,170]) tlzc12();    //推力轴承12  
+    }
+}
+//中间转动部件
+
+module zdbj1(){
+    union(){
+        translate([0,0,150])ccx();  //尺寸线
+        translate([0,0,50]){  
+            translate([0,0,105]) gdz_os12();   //光轴固定座12
+            translate([0,0,145]) gdz_os12();    //光轴固定座12  
+            translate([0,0,170]) tlzc12();    //推力轴承12  
+        }        
+        translate([0,0,15]){
+            translate([0,0,65])dizuo_y();  //支座
+            motor_s57() ;   //57减速电机
+            translate([0,0,100]) motor_zhijia57();   //减速电机支架        
+            translate([0,0,100]) lzq_12();   //联轴器12
+            translate([0,0,155])rotate([0,180,0]) zc_huatao12();  //轴承12    
+            translate([0,0,165]) fl_12();      //防水法兰
+            scale([1,1,1.2])translate([0,0,150]) roller_l12();  //转轴
+        }        
+
+    }
+}
+
+ //工作部件
+
+module gzbj(){
+    translate([0,0,37]){
+        translate([20,0,0])rotate([0,0,0])ljb();   // 连接板
+        translate([125,0,-120])scale([1,1,1]){
+            translate([0,0,60])scale([1.2,1.2,1])rotate([0,0,0])zc_huatao12();   //   滑套轴承12（上）       
+            translate([0,0,48])scale([1.25,1.25,1])rotate([0,180,0])zc_huatao12();   //   滑套轴承12（下） 
+            translate([0,0,56])tlzc12();  //推力轴承12
+            translate([0,0,65])scale([1.25,1.25,1])rotate([0,180,0])roller_l12();   //   带键轴   
+            translate([0,0,75])rotate([0,0,0])cl_60();  //齿轮                        
+            translate([-35,-30,115])rotate([0,180,0])motor_s42();   //42旋转电机
+            translate([-35,-30,75])rotate([0,0,0])cl_16();    //小齿轮
+                //升降模块
+            translate([0,0,200])rotate([0,0,0]){
+                rotate([0,0,0])translate([25,0,-70])sjljb();  //升降连接板
+                translate([0,0,0])rotate([0,0,0])motor_42();   //42提升电机
+                translate([0,0,-100])rotate([0,0,0])sg();   //丝杠
+                translate([0,10,25])rotate([0,-90,90]) scale([0.6,0.6,0.6])gdz_ls12();   //固定轴承座
+                translate([0,-0,-50])rotate([0,0,0]) lm();  // 螺母
+                translate([0,0,20])rotate([0,0,0]) scale([0.5,0.5,0.5])lzq_12();  // 联轴器
+            }
+            translate([0,0,-50])rotate([0,0,0]){
+                translate([0,0,0])rotate([0,0,0])dj();   //舵机
+                translate([0,0,0])rotate([0,0,0])djz();   //舵机爪(左)        
+                translate([0,0,0])rotate([0,-90,0])djz();   //舵机爪（右）  
+          //      translate([120,-75,-170])rotate([0,-45,0])djz();   //舵机爪（min)         
+            }
+        }
+    }
+}    
+
+
+a=0;
+b=0;
+//main:
+translate([0,0,])zdbj();   // 摆臂
+rotate([0,0,a]){
+    translate([180,0,200])lxc3030();   //铝型材3030   
+    translate([350,0,0])zdbj1(); // 中间转动驱动
+//    translate([420,0,250]);
+  {translate([425,0,250])scale([0.45,1,1])lxc3030()
+    rotate([0,0,b]);
+                 //铝型材3030 
+    }
+    translate([600,0,150])ccx();  //尺寸线         
+    translate([475,0,265])gzbj();   //工作部件     
+    translate([600,0,-45])rotate([0,0,0])gj_max();   //工件   
+    translate([600,0,-50])rotate([0,0,0])gj_min();   //工件                    
 }
 //工件区域
 {
-color("DarkViolet") translate([380,0,0]) 
+color("DarkViolet") translate([380,0,-45]) 
 cube([500,500,2],true);
 }
 //  "0“地面
 {
-color("yellow") translate([0,0,0]) 
+color("yellow") translate([0,0,-45]) 
 cylinder(1,700,700, center=true);
 }
 
-
-translate([0,0,-200]) {
-
-translate([-24,0,0]) {
-    union() {
-        cube(15, center=true);
-        sphere(10);
-    }
-}
-
-intersection() {
-    cube(15, center=true);
-    sphere(10);
-}
-
-translate([24,0,0]) {
-    difference() {
-        cube(15, center=true);
-        sphere(10);
-    }
-}
-}
