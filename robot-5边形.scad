@@ -641,7 +641,7 @@ module up_down(){
     }
 }
 //计算A点：
-p0=600;
+p0=500;
 B0=atan(1);
 a=(l1*l1+p0*p0-l2*l2)/(2*p0*cos(B0));
 yA1=((2*a*tan(B0)+sqrt((2*a*tan(B0))*(2*a*tan(B0))-4*(1+tan(B0)*tan(B0))*(a*a-l1*l1))))/(2*(1+tan(B0)*tan(B0)));
